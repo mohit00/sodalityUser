@@ -25,6 +25,7 @@ import com.radius.sodalityUser.repository.UnitRepository;
 import com.radius.sodalityUser.repository.UserRepositoryImpl;
 import com.radius.sodalityUser.response.FamilyListResponse;
 import com.radius.sodalityUser.response.FamilyResponseJson;
+import com.radius.sodalityUser.response.ParentGetJson;
 import com.radius.sodalityUser.response.ResidentListResponse;
 import com.radius.sodalityUser.response.ResidentResponseJson;
 import com.radius.sodalityUser.response.SocietyJson;
@@ -130,7 +131,10 @@ public class UserServiceImpl implements UserService {
 			} else if (loginData.getUser_type().equals(UserType.userTypes.Society.toString())) {
 				response.setData(userRepo.getSocietyDetailWithId(loginData.getId()));
 			} else if (loginData.getUser_type().equals(UserType.userTypes.Resident.toString())) {
-				response.setData(userRepo.getResidentDetailWithId(loginData.getId()));
+				User u =new User();
+				u = userRepo.getResidentDetailWithId(loginData.getId());
+				u.setParrentAccount(userRepo.getParentUuid(u.getUuid()));
+				response.setData(u);
 			} else if (loginData.getUser_type().equals(UserType.userTypes.Staff.toString())) {
 				response.setData(userRepo.getStaffDetailWithId(loginData.getId()));
 			}
@@ -514,7 +518,11 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 
 		User user = new User();
+ 
+		if (requestBody.containsKey("id")) {
+			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
 
+ 		}
 		if (requestBody.containsKey("email")) {
 			user.setEmail(requestBody.getJsonString("email").getString());
 		}
@@ -526,7 +534,13 @@ public class UserServiceImpl implements UserService {
 		user.setCreatedDate(date);
 		user.setLastModifiedDate(date);
 		user.setStatus(UserType.userStatus.Active.toString());
-		user.setUuid((fun.uuIDSend()));
+		if (requestBody.containsKey("uuid")) {
+			user.setUuid((requestBody.getString("uuid")));
+
+		}else {
+			user.setUuid((fun.uuIDSend()));
+
+		}
 		user.setUser_type(UserType.userTypes.FamilyMember.toString());
 		User byId = userRepo.getResidentDetail((requestBody.getString("parent_id")));
 		user.setParrentAccount(byId);
@@ -534,7 +548,6 @@ public class UserServiceImpl implements UserService {
 		userRepo.save(user);
 		return user;
 	}
-
 	@Override
 	public User updateFamilyMember(MultipartFile uploadfiles, JsonObject requestBody) {
 		// TODO Auto-generated method stub
@@ -555,9 +568,9 @@ public class UserServiceImpl implements UserService {
 		user.setStatus(UserType.userStatus.Active.toString());
 		user.setUuid(userlastDetail.get().getUuid());
 		user.setUser_type(UserType.userTypes.FamilyMember.toString());
-		User byId = userRepo.getResidentDetail((requestBody.getString("parent_id")));
-		user.setParrentAccount(byId);
+ 		user.setParrentAccount(userRepo.getResidentDetail((requestBody.getString("parent_id"))));
 		user = fun.familyAdd(uploadfiles, requestBody, user);
+		System.out.println(user.getFamilyDetail().getName());
 		userRepo.save(user);
 		return user;
 	}
@@ -589,5 +602,16 @@ public class UserServiceImpl implements UserService {
 		
 		return userRepo.getFamilyByUuid(uuid);
 		}
+
+	@Override
+	public ParentGetJson getParentDetail(String uuid) {
+		// TODO Auto-generated method stub
+		User parentUuid = userRepo.getParentUuid(uuid);
+			ParentGetJson json = new ParentGetJson();
+			json.setUuid(parentUuid.getUuid());
+			
+		return json
+				;
+	}
 
 }

@@ -155,4 +155,32 @@ public class UnitServiceImpl implements UnitService {
 		return u;
 	}
 
+	@Override
+	public UnitResponseList getResidentUnitList(String uuid) {
+		UnitResponseList responseList = new UnitResponseList();
+		responseList.setStatus(false);
+
+ 			ArrayList<Unit> allUnit = unitRepo.getResidentUnitList(uuid);
+			ArrayList<UnitResponsejson> list = new ArrayList<UnitResponsejson>();
+
+			for (int i = 0; i < allUnit.size(); i++) {
+				UnitResponsejson response = new UnitResponsejson();
+
+				response.setUnitDescription(allUnit.get(i).getDescription());
+				response.setCreatedDate(allUnit.get(i).getCreateDate());
+				response.setLastModifiedDate(allUnit.get(i).getUpdateDate());
+				response.setSoldStatus(allUnit.get(i).getSoldStatus());
+				response.setUnitNo(allUnit.get(i).getUnit_no());
+				response.setUnitType(allUnit.get(i).getUnit_type());
+				response.setUuid(allUnit.get(i).getUuid());
+				list.add(response);
+			}
+			responseList.setMessage("get Data Successfully");
+			responseList.setData(list);
+		 
+		// TODO Auto-generated method stub
+		return responseList;
+
+	}
+
 }

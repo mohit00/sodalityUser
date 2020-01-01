@@ -10,5 +10,5 @@ public interface UnitService {
 	public UnitResponseList getUnitTower(JsonObject requestBody);
 	public Unit getUnit(String uuid);
 	public Unit unitUpdate(JsonObject requestBody);
-
+	public UnitResponseList getResidentUnitList(String uuid);
 }

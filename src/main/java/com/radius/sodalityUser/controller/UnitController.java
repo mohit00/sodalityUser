@@ -50,4 +50,8 @@ public class UnitController {
 			JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(requestBodyString);
 			return new ResponseEntity<>(unitservice.unitUpdate(returnJsonObject), HttpStatus.OK);
 		}
+	 @GetMapping(value ="/Resident/Get/{uuid}")
+		public ResponseEntity<UnitResponseList> getResidentFlat(@PathVariable("uuid") String uuid){
+ 		     return new ResponseEntity<>(unitservice.getResidentUnitList(uuid), HttpStatus.OK);
+		}
 }

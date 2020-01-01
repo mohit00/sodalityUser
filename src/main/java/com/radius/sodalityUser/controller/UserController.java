@@ -25,6 +25,7 @@ import com.radius.sodalityUser.model.FamilyResident;
 import com.radius.sodalityUser.model.User;
 import com.radius.sodalityUser.response.UserResponse;
 import com.radius.sodalityUser.response.FamilyListResponse;
+import com.radius.sodalityUser.response.ParentGetJson;
 import com.radius.sodalityUser.response.ResidentListResponse;
 import com.radius.sodalityUser.response.SocietyListResponse;
 import com.radius.sodalityUser.response.StaffListResponse;
@@ -169,11 +170,7 @@ public class UserController {
 	}
 	@PutMapping(value ="/family/update")
 	public  ResponseEntity<User> updateFamily( @RequestParam(value ="files",  required=false) MultipartFile uploadfiles,@RequestParam("data") String data) {
-	 
-		System.out.println(data);
-
 		JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(data.toString());
-  		
 		return new ResponseEntity<>(service.updateFamilyMember(uploadfiles,returnJsonObject), HttpStatus.OK);
 	}
 	@PostMapping(value ="/family/get")
@@ -190,6 +187,12 @@ public class UserController {
  
    		
 		return new ResponseEntity<>(service.getFamilyDetail(uuid), HttpStatus.OK);
+	}
+	@GetMapping(value ="get/parent/uuid/{uuid}")
+	public ResponseEntity<ParentGetJson> getparentUUid(@PathVariable("uuid") String uuid) {
+		
+		return new ResponseEntity<>(service.getParentDetail(uuid), HttpStatus.OK);
+ 
 	}
 }
 

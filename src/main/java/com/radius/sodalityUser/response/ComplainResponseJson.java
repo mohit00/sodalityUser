@@ -11,10 +11,23 @@ private String complainUuid;
 private Date createDate;
 private Date updatedDate;
 private Date assignedDate;
+private String complainStatus;
 private Set<User> AssignedTo;
+ 
+ 
+
+public String getComplainStatus() {
+	return complainStatus;
+}
+
+public void setComplainStatus(String complainStatus) {
+	this.complainStatus = complainStatus;
+}
+
 public String getComplainTitle() {
 	return complainTitle;
 }
+
 public void setComplainTitle(String complainTitle) {
 	this.complainTitle = complainTitle;
 }

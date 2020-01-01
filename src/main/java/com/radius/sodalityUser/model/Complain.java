@@ -19,14 +19,21 @@ public class Complain {
     private String uuid;
     private String title;
     private String description;
-    private String category;
+	@Relationship(type="CATEGORY",direction = Relationship.UNDIRECTED) 
+    private Category category;
     private String complainStatus;
     private Date createdDate;
     private Date updatedDate;
     private Date assignedDate;
     private String OTP;
 
-    public String getOTP() {
+    public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	public String getOTP() {
 		return OTP;
 	}
 	public void setOTP(String oTP) {
@@ -41,7 +48,15 @@ public class Complain {
     public Set<User> assignedTo;
     @Relationship(type = "COMPLAIN_COMENTS", direction = Relationship.UNDIRECTED)
     public ComplainComment Comment;
-   
+    @Relationship(type = "COMPLAIN_ON", direction = Relationship.UNDIRECTED)
+    public Unit unit;
+    
+	public Unit getUnit() {
+		return unit;
+	}
+	public void setUnit(Unit unit) {
+		this.unit = unit;
+	}
 	public String getComplainStatus() {
 		return complainStatus;
 	}
@@ -66,12 +81,7 @@ public class Complain {
 	public void setAssignedDate(Date assignedDate) {
 		this.assignedDate = assignedDate;
 	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
+	 
 	public ComplainComment getComment() {
 		return Comment;
 	}

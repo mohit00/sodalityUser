@@ -333,7 +333,7 @@ public class Commonfunction {
 		JsonObject requestBody2 = jsonReader2.readObject();
 
 		if (requestBody2.containsKey("id")) {
-			userDetail.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
+			userDetail.setId(Long.parseLong(requestBody2.getJsonNumber("id").toString()));
 		}
 		if (requestBody2.containsKey("relationShip")) {
 			userDetail.setRelationShip(requestBody2.getString("relationShip"));

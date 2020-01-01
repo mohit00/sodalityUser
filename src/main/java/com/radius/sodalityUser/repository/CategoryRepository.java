@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.radius.sodalityUser.model.Category;
-import com.radius.sodalityUser.model.Tower;
 @Repository
 public interface CategoryRepository extends UserRepository<Category, Long> {
 

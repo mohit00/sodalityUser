@@ -3,15 +3,12 @@ package com.radius.sodalityUser.model;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
 
-@NodeEntity(label = "Family_DETAIL")
+@NodeEntity(label = "Family_Resident")
 public class FamilyResident {
- 
 	@Id()
 	@GeneratedValue()
 	private Long id;
-
 	private String profileImage;
 	private String name;
 	private String mobileNumber;

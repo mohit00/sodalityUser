@@ -12,7 +12,6 @@ import org.neo4j.ogm.annotation.Relationship;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -43,45 +42,37 @@ public class User {
 
 	@Relationship(type = "USER_DETAIL", direction = Relationship.OUTGOING)
 	public UserDetail userDetail;
-	
+
 	@Relationship(type = "USER_DETAIL", direction = Relationship.OUTGOING)
 	public SocietyDetail societyDetail;
-	
 
 	@Relationship(type = "USER_DETAIL", direction = Relationship.OUTGOING)
 	public ResidentDetail residentDetail;
-	
+
 	@Relationship(type = "USER_DETAIL", direction = Relationship.OUTGOING)
 	public FamilyResident familyDetail;
-	
+
 	@Relationship(type = "USER_DETAIL", direction = Relationship.OUTGOING)
 	public StaffDetals staffDetals;
-	
-	@JsonProperty(access = Access.WRITE_ONLY)
+
 	@Relationship(type = "UNDER", direction = Relationship.UNDIRECTED)
 	public User parrentAccount;
-	
-	
+
 	@Relationship(type = "FLAT_OWNED", direction = Relationship.UNDIRECTED)
 	public Set<Unit> flatOwned;
-	
-	
-	
+
 	public FamilyResident getFamilyDetail() {
 		return familyDetail;
 	}
-
 
 	public void setFamilyDetail(FamilyResident familyDetail) {
 		this.familyDetail = familyDetail;
 	}
 
-
 	public Set<Unit> getFlatOwned() {
 		return flatOwned;
 	}
 
-	 
 	public void setFlatOwned(Set<Unit> flatOwned) {
 		this.flatOwned = flatOwned;
 	}

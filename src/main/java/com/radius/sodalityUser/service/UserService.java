@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.radius.sodalityUser.model.User;
 import com.radius.sodalityUser.response.UserResponse;
 import com.radius.sodalityUser.response.FamilyListResponse;
+import com.radius.sodalityUser.response.ParentGetJson;
 import com.radius.sodalityUser.response.ResidentListResponse;
 import com.radius.sodalityUser.response.SocietyListResponse;
 import com.radius.sodalityUser.response.StaffListResponse;
@@ -56,7 +57,7 @@ public interface UserService {
 	public User updateFamilyMember(MultipartFile uploadfiles, JsonObject requestBody);
 	public FamilyListResponse getFamilyList( JsonObject requestBody);
 	public User getFamilyDetail(String uuid);
-
+	public ParentGetJson getParentDetail(String uuid);
 	
 
 
