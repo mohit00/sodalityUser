@@ -78,19 +78,21 @@ public class ComplainImp implements ComplainService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			User userParent = new User();
-			if (requestBody.containsKey("residentUuid")) {
-				User u = userRepo.getResidentDetail(requestBody.getString("residentUuid"));
-				userParent = userRepo.getParentUuid(u.getUuid());
-				c.setResident(u);
-				c.setAssignedBy(userParent);
-			}
-			if (requestBody.containsKey("unitUuid")) {
-				c.setUnit(unitRepo.getUnit(requestBody.getString("unitUuid")));
-			}
 
-			complainRepo.save(c);
 		}
+		
+		User userParent = new User();
+		if (requestBody.containsKey("residentUuid")) {
+			User u = userRepo.getResidentDetail(requestBody.getString("residentUuid"));
+			userParent = userRepo.getParentUuid(u.getUuid());
+			c.setResident(u);
+			c.setAssignedBy(userParent);
+		}
+		if (requestBody.containsKey("unitUuid")) {
+			c.setUnit(unitRepo.getUnit(requestBody.getString("unitUuid")));
+		}
+
+		complainRepo.save(c);
 		return c;
 	}
 
@@ -289,19 +291,55 @@ public class ComplainImp implements ComplainService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-				c.setResident(lastc.get().getResident());
-			c.setAssignedBy(lastc.get().getAssignedBy());
-			c.setAssignedDate(lastc.get().getAssignedDate());
-			c.setAssignedTo(lastc.get().getAssignedTo());
-			c.setOTP(lastc.get().getOTP());
- 
-			if (requestBody.containsKey("unitUuid")) {
-				c.setUnit(unitRepo.getUnit(requestBody.getString("unitUuid")));
-			}
-
-			complainRepo.save(c);
 		}
+		c.setResident(lastc.get().getResident());
+	c.setAssignedBy(lastc.get().getAssignedBy());
+	c.setAssignedDate(lastc.get().getAssignedDate());
+	c.setAssignedTo(lastc.get().getAssignedTo());
+	c.setOTP(lastc.get().getOTP());
+
+	if (requestBody.containsKey("unitUuid")) {
+		c.setUnit(unitRepo.getUnit(requestBody.getString("unitUuid")));
+	}
+
+	complainRepo.save(c);
+
 		return c;
+	}
+
+	@Override
+	public ComplainResponseList getSocietyComplainList(JsonObject requestBody) {
+		// TODO Auto-generated method stub
+		ComplainResponseList response = new ComplainResponseList();
+		ArrayList<Complain> list = new ArrayList<Complain>();
+		if (requestBody.containsKey("parentId")) {
+			list = complainRepo.getSocietyComplainResponseList(requestBody.getString("parentId"));
+
+		}
+		response.setStatus(false);
+		response.setMessage("No data found");
+
+		if (list.size() > 0) {
+			response.setStatus(true);
+			response.setMessage("data found");
+
+			ArrayList<ComplainResponseJson> listJson = new ArrayList<ComplainResponseJson>();
+			for (int i = 0; i < list.size(); i++) {
+
+				ComplainResponseJson json = new ComplainResponseJson();
+				json.setAssignedDate(list.get(i).getAssignedDate());
+				json.setAssignedTo(list.get(i).getAssignedTo());
+				json.setComplainTitle(list.get(i).getTitle());
+				json.setComplainUuid(list.get(i).getUuid());
+				json.setCreateDate(list.get(i).getCreatedDate());
+				json.setUpdatedDate(list.get(i).getUpdatedDate());
+				json.setComplainStatus(list.get(i).getComplainStatus());
+				listJson.add(json);
+			}
+			response.setData(listJson);
+
+		}
+		return response;
 	}
 
 }

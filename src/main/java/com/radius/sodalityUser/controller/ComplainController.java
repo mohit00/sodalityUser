@@ -76,6 +76,12 @@ public class ComplainController {
 		JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(requestBodyString);
 		return new ResponseEntity<>(service.getResidentComplainList( returnJsonObject), HttpStatus.OK);
 	}
+	@PostMapping(value="get/Society/Complain/List")
+	public ResponseEntity<ComplainResponseList> getSocietyComplainList(@Valid @RequestBody String requestBodyString
+			 ) {
+		JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(requestBodyString);
+		return new ResponseEntity<>(service.getSocietyComplainList( returnJsonObject), HttpStatus.OK);
+	}
 	@GetMapping(value ="get/{uuid}")
 	public ResponseEntity<Complain> getComplainDetail(@PathVariable("uuid") String uuid) {
  		return new ResponseEntity<>(service.getComplainDetail( uuid), HttpStatus.OK);

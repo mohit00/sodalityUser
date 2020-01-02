@@ -31,6 +31,12 @@ public interface ComplainRepository extends UserRepository<Complain, Long> {
     		"    	 where user.uuid ={uuid} \r\n" + 
     		"    	  return com,cat,rel")
     ArrayList<Complain> getcomplainResponseList(@Param("uuid") String uuid);
+    
+    @Query("  Match(com:Complain)-[rel:ASSIGNED_BY]->(user:user) \r\n" + 
+    		"Match(com) -[:CATEGORY]->(cat:Category)\r\n" + 
+    		"    	 where user.uuid ={uuid} \r\n" + 
+    		"    	  return com,cat,rel")
+    ArrayList<Complain> getSocietyComplainResponseList(@Param("uuid") String uuid);
     @Query("Match(com:Complain)\r\n" + 
     		"Match(com)-[rel:UNDER]->(user:user)\r\n" + 
     		"Match(com) -[rel2:CATEGORY]->(cat:Category)\r\n" + 
