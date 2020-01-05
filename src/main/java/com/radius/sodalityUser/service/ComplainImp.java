@@ -101,9 +101,10 @@ public class ComplainImp implements ComplainService {
 		// TODO Auto-generated method stub
 		Complain c = new Complain();
 		if (requestBody.containsKey("complainId")) {
-			c = complainRepo.getComplainByUUId(requestBody.getString("complainId"));
+			c = complainRepo.getComplainDetail(requestBody.getString("complainId"));
 		}
 		c.setOTP(fun.setotp(c.getId()));
+		
 		Date date = new Date();
 		c.setAssignedDate(date);
 		c.setUpdatedDate(date);
@@ -125,17 +126,16 @@ public class ComplainImp implements ComplainService {
 		Complain c = new Complain();
 
 		if (requestBody.containsKey("complainId")) {
-			c = complainRepo.getComplainByUUId(requestBody.getString("complainId"));
 			if (requestBody.containsKey("Status")) {
 
-				c.setComplainStatus(requestBody.getString("Status"));
+			 complainRepo.changeStatus(requestBody.getString("complainId"),requestBody.getString("status"));
 			}
 		}
-		complainRepo.save(c);
+//		 changeStatus
 		CustomResponse response = new CustomResponse();
 		response.setStatus(true);
 		response.setMessage("Status successfully changed");
-
+		 
 		return response;
 	}
 
@@ -314,6 +314,41 @@ public class ComplainImp implements ComplainService {
 		ArrayList<Complain> list = new ArrayList<Complain>();
 		if (requestBody.containsKey("parentId")) {
 			list = complainRepo.getSocietyComplainResponseList(requestBody.getString("parentId"));
+
+		}
+		response.setStatus(false);
+		response.setMessage("No data found");
+
+		if (list.size() > 0) {
+			response.setStatus(true);
+			response.setMessage("data found");
+
+			ArrayList<ComplainResponseJson> listJson = new ArrayList<ComplainResponseJson>();
+			for (int i = 0; i < list.size(); i++) {
+
+				ComplainResponseJson json = new ComplainResponseJson();
+				json.setAssignedDate(list.get(i).getAssignedDate());
+				json.setAssignedTo(list.get(i).getAssignedTo());
+				json.setComplainTitle(list.get(i).getTitle());
+				json.setComplainUuid(list.get(i).getUuid());
+				json.setCreateDate(list.get(i).getCreatedDate());
+				json.setUpdatedDate(list.get(i).getUpdatedDate());
+				json.setComplainStatus(list.get(i).getComplainStatus());
+				listJson.add(json);
+			}
+			response.setData(listJson);
+
+		}
+		return response;
+	}
+
+	@Override
+	public ComplainResponseList getStaffComplainList(JsonObject requestBody) {
+		// TODO Auto-generated method stub
+		ComplainResponseList response = new ComplainResponseList();
+		ArrayList<Complain> list = new ArrayList<Complain>();
+		if (requestBody.containsKey("parentId")) {
+			list = complainRepo.getStaffComplainResponseList(requestBody.getString("parentId"));
 
 		}
 		response.setStatus(false);

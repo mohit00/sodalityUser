@@ -158,7 +158,12 @@ public class UserController {
 	    return new ResponseEntity<>(society, HttpStatus.OK);
 	}
 	
-	
+	@PostMapping(value ="/get/society/staff/byCategory")
+	public ResponseEntity<StaffListResponse> getStaffListByCategory(@Valid @RequestBody String requestBodyString) {		
+		JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(requestBodyString);
+		StaffListResponse society = service.getStaffListByCategory(returnJsonObject);
+	    return new ResponseEntity<>(society, HttpStatus.OK);
+	}
 	@PostMapping(value ="/family/save")
 	public  ResponseEntity<User> savefamily( @RequestParam(value ="files",  required=false) MultipartFile uploadfiles,@RequestParam("data") String data) {
 	 

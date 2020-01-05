@@ -14,6 +14,12 @@ public interface ComplainRepository extends UserRepository<Complain, Long> {
     		"where com.uuid ={uuid}\r\n" + 
     		"return com,rel,rel2,user,user2")
     Complain getComplainByUUId(@Param("uuid") String uuid);
+    @Query("MATCH(com:Complain)  \r\n" + 
+    		" where  com.uuid ={uuid}\r\n" + 
+    		" set com.complainStatus ={status}\r\n" + 
+    		"\r\n" + 
+    		" return com")
+    Complain changeStatus(@Param("uuid") String uuid,@Param("status") String status);
 
     
     @Query("  Match(com:Complain)-[rel:ASSIGNED_BY]->(user:user)\r\n" + 
@@ -37,6 +43,11 @@ public interface ComplainRepository extends UserRepository<Complain, Long> {
     		"    	 where user.uuid ={uuid} \r\n" + 
     		"    	  return com,cat,rel")
     ArrayList<Complain> getSocietyComplainResponseList(@Param("uuid") String uuid);
+    @Query(" Match(com:Complain)-[rel:ASSIGNED_TO]->(user:user) \r\n" + 
+    		"    		 Match(com) -[:CATEGORY]->(cat:Category) \r\n" + 
+    		"    	  where user.uuid ={uuid}\r\n" + 
+    		"     	return com,cat,rel")
+    ArrayList<Complain> getStaffComplainResponseList(@Param("uuid") String uuid);
     @Query("Match(com:Complain)\r\n" + 
     		"Match(com)-[rel:UNDER]->(user:user)\r\n" + 
     		"Match(com) -[rel2:CATEGORY]->(cat:Category)\r\n" + 

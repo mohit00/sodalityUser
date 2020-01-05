@@ -46,8 +46,7 @@ public class Complain {
     public User assignedBy;
     @Relationship(type = "ASSIGNED_TO", direction = Relationship.UNDIRECTED)
     public Set<User> assignedTo;
-    @Relationship(type = "COMPLAIN_COMENTS", direction = Relationship.UNDIRECTED)
-    public ComplainComment Comment;
+
     @Relationship(type = "COMPLAIN_ON", direction = Relationship.UNDIRECTED)
     public Unit unit;
     
@@ -82,12 +81,7 @@ public class Complain {
 		this.assignedDate = assignedDate;
 	}
 	 
-	public ComplainComment getComment() {
-		return Comment;
-	}
-	public void setComment(ComplainComment comment) {
-		Comment = comment;
-	}
+	 
 	public Long getId() {
 		return id;
 	}

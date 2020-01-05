@@ -42,7 +42,8 @@ public interface UserRepositoryImpl extends UserRepository<User, Long>  {
     @Query("Match (user0) -[rel:UNDER]-> (user1 :user) MATCH (user0)-[rel1:USER_DETAIL]->(del:staff_detail) MATCH(del) -[rel2:CATEGORY]->(cat:Category)   where user1.uuid = {uuid} AND user0.user_type = 'Staff'  return user0,rel1,del,rel2,cat")
     ArrayList<User> getStaffList(@Param("uuid") String uuid);
     
-    
+    @Query("Match (user0) -[rel:UNDER]-> (user1 :user) MATCH (user0)-[rel1:USER_DETAIL]->(del:staff_detail) MATCH(del) -[rel2:CATEGORY]->(cat:Category)   where user1.uuid = {uuid} AND user0.user_type = 'Staff' AND cat.uuid ={categoryuuid}  return user0,rel1,del,rel2,cat")
+    ArrayList<User> getStaffListByCategory(@Param("uuid") String uuid,@Param("categoryuuid") String categoryuuid);
     @Query("Match (user0) -[rel:UNDER]-> (user1 :user)   MATCH (user0)-[rel1:USER_DETAIL]->(del:Family_Resident)  where user1.uuid = {uuid} AND user1.user_type = 'Resident' AND user0.user_type = 'FamilyMember'  return user0,rel,rel1,del")
     ArrayList<User> getFamilyList(@Param("uuid") String uuid);
     
@@ -51,4 +52,9 @@ public interface UserRepositoryImpl extends UserRepository<User, Long>  {
     
     @Query("Match (user0:user)  -[rel1:UNDER]->(del:user)  where user0.uuid = {uuid}   return del")
     User getParentUuid(@Param("uuid") String uuid);
+    
+    @Query("Match (user0:user)   where user0.uuid = {uuid}   return user0")
+    User getUser(@Param("uuid") String uuid);
+    
+    
 }

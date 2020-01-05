@@ -50,6 +50,7 @@ public interface UserService {
 	public User updateStaff(MultipartFile uploadfiles, JsonObject requestBody);
 
 	public StaffListResponse getStaffList(JsonObject requestBody);
+	public StaffListResponse getStaffListByCategory(JsonObject requestBody);
 
 	public User getStaffuuid(String uuid);
 

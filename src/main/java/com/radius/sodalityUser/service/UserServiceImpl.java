@@ -614,4 +614,45 @@ public class UserServiceImpl implements UserService {
 				;
 	}
 
+	@Override
+	public StaffListResponse getStaffListByCategory(JsonObject requestBody) {
+		// TODO Auto-generated method stub
+		ArrayList<User> u = null;
+		ArrayList<staffResponse> responseJson = new ArrayList<staffResponse>();
+		if (requestBody.containsKey("uuid")) {
+			if(requestBody.containsKey("categoryUUid")) {
+				u = userRepo.getStaffListByCategory(requestBody.getJsonString("uuid").getString(),requestBody.getJsonString("categoryUUid").getString());
+
+			}else {
+				u = userRepo.getStaffList(requestBody.getJsonString("uuid").getString());
+
+			}
+			for (int i = 0; i < u.size(); i++) {
+				staffResponse json = new staffResponse();
+				json.setEmail(u.get(i).getEmail());
+				json.setUuid(u.get(i).getUuid());
+				json.setCategory(u.get(i).getStaffDetals().getCategory().getTitle());
+				json.setChooseStaffWorkArea(u.get(i).getStaffDetals().getChooseStaffWorkArea());
+				json.setCreatedDate(u.get(i).getCreatedDate());
+				json.setLastModifiedDate(u.get(i).getLastModifiedDate());
+				json.setDesignation(u.get(i).getStaffDetals().getDesignation());
+				json.setEmployeeId(u.get(i).getStaffDetals().getEmployeeId());
+				json.setName(u.get(i).getStaffDetals().getName());
+				json.setPic(u.get(i).getStaffDetals().getPic());
+				json.setPoliceVerification(u.get(i).getStaffDetals().getPoliceVerification());
+				json.setValidUpto(u.get(i).getStaffDetals().getValidUpto());
+
+				responseJson.add(json);
+			}
+		}
+		StaffListResponse response = new StaffListResponse();
+
+		if (u.size() > 0) {
+			response.setStatus(true);
+			response.setData(responseJson);
+			response.setMessage("Data get Successfully");
+		}
+		return response;
+	}
+
 }
