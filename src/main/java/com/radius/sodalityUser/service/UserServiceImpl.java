@@ -127,6 +127,7 @@ public class UserServiceImpl implements UserService {
 		if (loginData != null) {
 			response.setStatus(true);
 			if (loginData.getUser_type().equals(UserType.userTypes.Admin.toString())) {
+				System.out.println(loginData.getId());
 				response.setData(userRepo.getAdminDetailWithId(loginData.getId()));
 			} else if (loginData.getUser_type().equals(UserType.userTypes.Society.toString())) {
 				response.setData(userRepo.getSocietyDetailWithId(loginData.getId()));

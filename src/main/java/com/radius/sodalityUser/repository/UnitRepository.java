@@ -12,6 +12,6 @@ public interface UnitRepository  extends UserRepository<Unit, Long>  {
 	    ArrayList<Unit> getAllUnit(@Param("uuid") String uuid);
 	    @Query(" Match (unit:Unit)  where unit.uuid = {uuid}  RETURN unit")
 	    Unit getUnit(@Param("uuid") String uuid);
-	    @Query("Match (unit:Unit) <-[rel:FLAT_OWNED]- (u:user)  where u.uuid = {uuid}  RETURN unit")
+	    @Query("Match (unit:Unit) <-[rel:FLAT_OWNED]- (u:User)  where u.uuid = {uuid}  RETURN unit")
 	    ArrayList<Unit> getResidentUnitList(@Param("uuid") String uuid);
 }

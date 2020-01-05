@@ -15,7 +15,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-@NodeEntity(label = "user")
+@NodeEntity(label = "User")
 public class User {
 	@Id()
 	@GeneratedValue()
@@ -23,6 +23,7 @@ public class User {
 
 	@Index(unique = true)
 	private String email;
+	
 	private String password;
 	private String user_type;
 	private String Status;
@@ -54,7 +55,7 @@ public class User {
 
 	@Relationship(type = "USER_DETAIL", direction = Relationship.OUTGOING)
 	public StaffDetals staffDetals;
-
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@Relationship(type = "UNDER", direction = Relationship.UNDIRECTED)
 	public User parrentAccount;
 

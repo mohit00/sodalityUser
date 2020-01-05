@@ -76,7 +76,7 @@ public class Commonfunction {
 	public User SocietyAdd(MultipartFile[] uploadfiles, HttpServletRequest request, MultipartFile[] adImage,
 			MultipartFile billLogo, MultipartFile societyLogo, JsonObject requestBody, User user) {
 		final SocietyDetail userDetail = new SocietyDetail();
-		String path = "src/main/resources/images/";
+		String path = "/images/";
 		if (requestBody.containsKey("userDetail")) {
 
 			JsonReader jsonReader2 = Json
@@ -500,7 +500,7 @@ public class Commonfunction {
 			byte[] bytes = file.getBytes();
 			Path path = Paths.get(absolutePath + '/' + file.getOriginalFilename());
 			Files.write(path, bytes);
-			imagePath.add("resources/images/" + file.getOriginalFilename());
+			imagePath.add("/images/" + file.getOriginalFilename());
 
 		}
 		return imagePath;

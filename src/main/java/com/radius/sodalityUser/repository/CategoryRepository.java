@@ -10,7 +10,7 @@ import com.radius.sodalityUser.model.Category;
 @Repository
 public interface CategoryRepository extends UserRepository<Category, Long> {
 
-    @Query("MATCH(cat:Category)-[rel:UNDER]->(user:user) WHERE ID(user) ={id} AND user.user_type='Society'       return cat")
+    @Query("MATCH(cat:Category)-[rel:UNDER]->(user:User) WHERE ID(user) ={id} AND user.user_type='Society'       return cat")
     ArrayList<Category> getAllCategory(@Param("id") Long id);
     @Query("Match (cat:Category) where cat.uuid = {uuid}   return cat")
     Category getCategoryDetail(@Param("uuid") String uuid);
