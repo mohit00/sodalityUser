@@ -125,19 +125,20 @@ public class Commonfunction {
 				if (societyLogo != null) {
 					userDetail.setSocietyLogo(saveUploadedFiles(Arrays.asList(societyLogo)).get(0));
 
-				} else if (requestBody2.containsKey("societyLogoArray")) {
-					userDetail.setSocietyLogo(path + requestBody2.getJsonString("societyLogoArray").getString());
+				} else {
+					userDetail.setSocietyLogo(user.societyDetail.getSocietyLogo());
+//					userDetail.setSocietyLogo(path + requestBody2.getJsonString("societyLogoArray").getString());
 
 				}
 				if (billLogo != null) {
 					userDetail.setBillLogo(saveUploadedFiles(Arrays.asList(billLogo)).get(0));
 
-				} else if (requestBody2.containsKey("billLogoArray")) {
-					userDetail.setBillLogo(path + requestBody2.getJsonString("billLogoArray").getString());
+				} else {
+					userDetail.setBillLogo(user.getSocietyDetail().getBillLogo());
 
 				}
+
 				if (requestBody2.containsKey("imageListArray")) {
-					System.out.println(requestBody2.getJsonArray("imageListArray"));
 					for (int i = 0; i < requestBody2.getJsonArray("imageListArray").size(); i++) {
 						listimage.add(path + requestBody2.getJsonArray("imageListArray").getString(i));
 					}
@@ -306,26 +307,22 @@ public class Commonfunction {
 				userDetail.setPoliceVerification((requestBody2.getBoolean("policeVerification")));
 
 			}
-			if (requestBody2.containsKey("pic")) {
-				userDetail.setPic(requestBody2.getString("pic"));
-			} else {
+		 
 				try {
 					if (uploadfiles != null) {
 						userDetail.setPic(saveUploadedFiles(Arrays.asList(uploadfiles)).get(0));
 
+					}else {
+						userDetail.setPic(user.getStaffDetals().getPic());
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-			}
 			user.setStaffDetals(userDetail);
 		}
-
 		return user;
 	}
-
 	public User familyAdd(MultipartFile uploadfiles, JsonObject requestBody, User user) {
 		final FamilyResident userDetail = new FamilyResident();
 		JsonReader jsonReader2 = Json
@@ -400,26 +397,40 @@ public class Commonfunction {
 				userDetail.setClubMembership(requestBody2.getBoolean("clubMembership"));
 			}
 			if (requestBody2.containsKey("mobileNumber")) {
-				userDetail.setMobileNumber(requestBody2.getString("mobileNumber"));
 
-			}
-			if (requestBody2.containsKey("alternateMobileNumber")) {
-				if (requestBody2.getString("alternateMobileNumber") != null) {
-					userDetail.setAlternateMobileNumber(requestBody2.getString("alternateMobileNumber"));
+				if (!requestBody2.getJsonNumber("mobileNumber").isIntegral()) {
+					userDetail.setMobileNumber(requestBody2.getJsonNumber("mobileNumber").toString());
 
 				}
 
 			}
+
 			if (requestBody2.containsKey("alternateEmailId")) {
 				userDetail.setAlternateEmailId(requestBody2.getString("alternateEmailId"));
 
 			}
-			if (requestBody2.containsKey("landLine")) {
-				userDetail.setLandLine(requestBody2.getString("landLine"));
+			if (requestBody2.containsKey("alternateMobileNumber")) {
+
+				if (!requestBody2.getJsonNumber("alternateMobileNumber").isIntegral()) {
+					userDetail.setAlternateMobileNumber(requestBody2.getJsonNumber("alternateMobileNumber").toString());
+
+				}
 
 			}
-			if (requestBody2.getString("intercom") != null) {
-				userDetail.setIntercom(requestBody2.getString("intercom"));
+			if (requestBody2.containsKey("landLine")) {
+
+				if (!requestBody2.getJsonNumber("landLine").isIntegral()) {
+					userDetail.setLandLine(requestBody2.getJsonNumber("landLine").toString());
+
+				}
+
+			}
+			if (requestBody2.containsKey("intercom")) {
+
+				if (!requestBody2.getJsonNumber("intercom").isIntegral()) {
+					userDetail.setIntercom(requestBody2.getJsonNumber("intercom").toString());
+
+				}
 
 			}
 			if (requestBody2.containsKey("occupation")) {
@@ -459,7 +470,7 @@ public class Commonfunction {
 					userDetail.setProfileImage(saveUploadedFiles(Arrays.asList(uploadfiles)).get(0));
 				} else {
 					if (requestBody2.containsKey("profileImage")) {
-						userDetail.setProfileImage(requestBody2.getString("profileImage"));
+						userDetail.setProfileImage(user.getResidentDetail().getProfileImage());
 					}
 				}
 			} catch (IOException e) {
@@ -491,11 +502,11 @@ public class Commonfunction {
 		File file1 = new File(path1);
 		String absolutePath = file1.getAbsolutePath();
 		System.out.println(absolutePath);
-		ArrayList<String> imagePath = new ArrayList();
+		ArrayList<String> imagePath = new ArrayList<String>();
 		for (MultipartFile file : files) {
 
 			if (file.isEmpty()) {
-				continue; // next pls
+				continue;  
 			}
 			byte[] bytes = file.getBytes();
 			Path path = Paths.get(absolutePath + '/' + file.getOriginalFilename());

@@ -60,7 +60,7 @@ public class ComplainCommentServiceImpl implements ComplainCommentService {
 		// TODO Auto-generated method stub
 		ComplainCommentResponseList response = new ComplainCommentResponseList();
 		response.setStatus(false);
-		ArrayList<ComplainComment> getAllComment = commentRepo.getAllComplain(requestBody.getJsonString("uuid").getString());
+		ArrayList<ComplainComment> getAllComment = commentRepo.getAllComment(requestBody.getJsonString("uuid").getString());
 		ArrayList<ComplainCommentResponseJson> list = new ArrayList<ComplainCommentResponseJson>();
 		if(getAllComment.size() > 0) {
  
@@ -71,6 +71,12 @@ public class ComplainCommentServiceImpl implements ComplainCommentService {
 				arrayJson.setCommentUuid(getAllComment.get(i).getUuid());
 				arrayJson.setComplainDate(getAllComment.get(i).getCommentDate());
 				arrayJson.setComplainStatus(getAllComment.get(i).getComplain().getComplainStatus());
+				if(getAllComment.get(i).getCommentBy().getUser_type().equalsIgnoreCase("Staff")) {
+					arrayJson.setProfileImage(userRepo.findById(getAllComment.get(i).getCommentBy().getId()).get().getStaffDetals().getPic());	 
+				}
+				if(getAllComment.get(i).getCommentBy().getUser_type().equalsIgnoreCase("Society")) {
+					arrayJson.setProfileImage(userRepo.findById(getAllComment.get(i).getCommentBy().getId()).get().getSocietyDetail().getSocietyLogo());	 
+				}
 				list.add(arrayJson);
 			}
 			response.setStatus(true);

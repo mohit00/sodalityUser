@@ -262,33 +262,20 @@ public class UserServiceImpl implements UserService {
 			MultipartFile billLogo, MultipartFile societyLogo, JsonObject requestBody) {
 		// TODO Auto-generated method stub
 		User user = new User();
-		Optional<User> userlastDetail = null;
-
+ 
 		if (requestBody.containsKey("id")) {
 			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
-			userlastDetail = userRepo.findById(Long.parseLong(requestBody.getJsonNumber("id").toString()));
-
-		}
-		System.out.println(userlastDetail.get().getEmail());
-		user.setEmail(userlastDetail.get().getEmail());
-		user.setPassword(userlastDetail.get().getPassword());
-		user.setCreatedDate((userlastDetail.get().getCreatedDate()));
-
-		if (requestBody.containsKey("uuid")) {
-			user.setUuid(requestBody.getJsonString("uuid").getString());
+			user = userRepo.findById(Long.parseLong(requestBody.getJsonNumber("id").toString())).get();
 		}
 		Date date = new Date();
 		user.setLastModifiedDate(date);
-		user.setStatus(UserType.userStatus.Active.toString());
-		if (requestBody.containsKey("user_type")) {
+ 		if (requestBody.containsKey("user_type")) {
 			user.setUser_type(requestBody.getJsonString("user_type").getString());
 			if (requestBody.getJsonString("user_type").getString().equals(UserType.userTypes.Society.toString())) {
-				user = fun.SocietyAdd(uploadfiles, request, adImage, billLogo, societyLogo, requestBody, user);
-				User byId = userRepo.getById(Long.parseLong(requestBody.getJsonNumber("parent_id").toString()));
-				user.setParrentAccount(byId);
+				user=  fun.SocietyAdd(uploadfiles, request, adImage, billLogo, societyLogo, requestBody, user); 
 			}
 		}
-		userRepo.save(user);
+ 		userRepo.save(user);
 		return user;
 	}
 
@@ -333,7 +320,7 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		if (requestBody.containsKey("id")) {
 			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
-			userLastDetail = userRepo.getResidentDetailWithId(user.getId());
+			user = userRepo.findById(user.getId()).get();
 		}
 		if (requestBody.containsKey("flatOwned")) {
 			Set<Unit> set = new HashSet<Unit>();
@@ -341,26 +328,11 @@ public class UserServiceImpl implements UserService {
 				set.add(unitRepo.getUnit(requestBody.getJsonArray("flatOwned").getString(i)));
 			}
 			user.setFlatOwned(set);
-		}
-		if (requestBody.containsKey("email")) {
-			user.setEmail(requestBody.getJsonString("email").getString());
-		}
-		if (requestBody.containsKey("password")) {
-			user.setPassword(requestBody.getJsonString("password").getString());
-		}
+		} 
 		user.setCreatedDate(userLastDetail.getCreatedDate());
-		Date date = new Date();
-
+		Date date = new Date(); 
 		user.setLastModifiedDate(date);
-		user.setStatus(UserType.userStatus.Active.toString());
-
-		user.setUuid((userLastDetail.getUuid()));
-
-		user.setUser_type(UserType.userTypes.Resident.toString());
-
-		User byId = userRepo.getById(Long.parseLong(requestBody.getJsonNumber("parent_id").toString()));
-		user.setParrentAccount(byId);
-		user = fun.residentAdd(uploadfiles, requestBody, user);
+ 		user = fun.residentAdd(uploadfiles, requestBody, user);
 
 		userRepo.save(user);
 		return user;
@@ -451,29 +423,13 @@ public class UserServiceImpl implements UserService {
 	public User updateStaff(MultipartFile uploadfiles, JsonObject requestBody) {
 		// TODO Auto-generated method stub
 		User user = new User();
-		Optional<User> userlastDetail = null;
-		if (requestBody.containsKey("id")) {
+ 		if (requestBody.containsKey("id")) {
 			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
-			userlastDetail = userRepo.findById(user.getId());
-		}
-		if (requestBody.containsKey("email")) {
-			user.setEmail(requestBody.getJsonString("email").getString());
-		}
-		if (requestBody.containsKey("password")) {
-			user.setPassword(requestBody.getJsonString("password").getString());
-		}
-		user.setCreatedDate(userlastDetail.get().getCreatedDate());
-		user.setUuid(userlastDetail.get().getUuid());
-		Date date = new Date();
-
-		user.setLastModifiedDate(date);
-		user.setStatus(UserType.userStatus.Active.toString());
-
-		user.setUser_type(UserType.userTypes.Staff.toString());
-		System.out.println(userlastDetail.get().getParrentAccount().getId());
-		User byId = userRepo.getById(userlastDetail.get().getParrentAccount().getId());
-		user.setParrentAccount(byId);
-		user = fun.staffAdd(uploadfiles, requestBody, user);
+			user = userRepo.findById(user.getId()).get();
+		} 
+ 		Date date = new Date(); 
+		user.setLastModifiedDate(date); 
+  		user = fun.staffAdd(uploadfiles, requestBody, user);
 
 		userRepo.save(user);
 		return user;

@@ -41,6 +41,11 @@ public class CategoryController {
 		JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(requestBodyString);
 		return new ResponseEntity<>(service.getCategory( returnJsonObject), HttpStatus.OK);
 	}
+	@PostMapping(value = "/Get/ByResident")
+	public ResponseEntity<ArrayList<Category>> getCategoryByResidentId( @Valid @RequestBody String requestBodyString) {
+		JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(requestBodyString);
+		return new ResponseEntity<>(service.getCategoryByResidentIId( returnJsonObject), HttpStatus.OK);
+	}
 	@GetMapping(value = "/Get/{uuid}")
 	public ResponseEntity<Category> getCategoryDetail(@PathVariable("uuid") String uuid) {
  		return new ResponseEntity<>(service.getCategoryDetail(uuid), HttpStatus.OK);

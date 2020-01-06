@@ -79,5 +79,15 @@ public class CategoryImpl implements CategoryService {
  		catRepo.save(c);
 		return c;
 	}
+	@Override
+	public ArrayList<Category> getCategoryByResidentIId(JsonObject requestBody) {
+		// TODO Auto-generated method stub
+		ArrayList<Category> list = new ArrayList<Category>();
+		if (requestBody.containsKey("parentId")) {
+			 System.out.println(userRepo.getParentUuid(requestBody.getString("parentId")).getId());
+			list = catRepo.getAllCategory(userRepo.getParentUuid(requestBody.getString("parentId")).getId()); 
+			}
+		return list;
+	}
 	 
 }
