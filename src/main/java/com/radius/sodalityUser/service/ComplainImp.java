@@ -254,27 +254,27 @@ public class ComplainImp implements ComplainService {
 	public Complain updateComplain(MultipartFile[] uploadfiles, JsonObject requestBody) {
 		// TODO Auto-generated method stub
 		Complain c = new Complain();
-		Optional<Complain> lastc =null;
-		if (requestBody.containsKey("title")) {
-			c.setTitle(requestBody.getString("title"));
-		}
 		if (requestBody.containsKey("id")) {
 			c.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
-			lastc = complainRepo.findById(c.getId());
+			c  = complainRepo.findById(c.getId()).get();
 		}
+ 		if (requestBody.containsKey("title")) {
+			c.setTitle(requestBody.getString("title"));
+		}
+		
 
 		if (requestBody.containsKey("description")) {
 			c.setDescription(requestBody.getString("description"));
 		}
 		if (requestBody.containsKey("categoryUuid")) {
-			c.setCategory(catRepo.getCategoryDetail(requestBody.getString("categoryUuid")));
+			c.setCategory(c.getCategory());
 		}
 		Date date = new Date();
 
-		c.setCreatedDate(lastc.get().getCreatedDate());
+		c.setCreatedDate( c.getCreatedDate());
 		c.setUpdatedDate(date);
 
-		c.setUuid(lastc.get().getUuid());
+		c.setUuid( c.getUuid());
 		c.setComplainStatus(UserType.complainStatus.New.toString());
 		String ImagesListfileName = Arrays.stream(uploadfiles).map(x -> {
 			return x.getOriginalFilename();
@@ -292,11 +292,11 @@ public class ComplainImp implements ComplainService {
 				e.printStackTrace();
 			}
 		}
-		c.setResident(lastc.get().getResident());
-	c.setAssignedBy(lastc.get().getAssignedBy());
-	c.setAssignedDate(lastc.get().getAssignedDate());
-	c.setAssignedTo(lastc.get().getAssignedTo());
-	c.setOTP(lastc.get().getOTP());
+		c.setResident(c.getResident());
+	c.setAssignedBy(c.getAssignedBy());
+	c.setAssignedDate(c.getAssignedDate());
+	c.setAssignedTo(c.getAssignedTo());
+	c.setOTP(c.getOTP());
 
 	if (requestBody.containsKey("unitUuid")) {
 		c.setUnit(unitRepo.getUnit(requestBody.getString("unitUuid")));
