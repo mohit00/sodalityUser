@@ -222,6 +222,54 @@ public class Commonfunction {
 		return user;
 	}
 
+	public User GroupAdd(MultipartFile uploadfiles, JsonObject requestBody, User user) {
+
+		final UserDetail userDetail = new UserDetail();
+		if (requestBody.containsKey("userDetail")) {
+			System.out.print(requestBody.getJsonObject("userDetail"));
+			JsonReader jsonReader2 = Json
+					.createReader(new StringReader(requestBody.getJsonObject("userDetail").toString()));
+			JsonObject requestBody2 = jsonReader2.readObject();
+			if (requestBody2.containsKey("id")) {
+				userDetail.setId(user.getUserDetail().getId());
+			}
+
+			try {
+				if (uploadfiles != null) {
+					userDetail.setProfileImage((saveUploadedFiles(Arrays.asList(uploadfiles)).get(0)));
+
+				} else {
+					userDetail.setProfileImage(user.getUserDetail().getProfileImage());
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (requestBody2.containsKey("address")) {
+				userDetail.setAddress(requestBody2.getJsonString("address").getString());
+
+			}
+			if (requestBody2.containsKey("name")) {
+				userDetail.setName(requestBody2.getString("name"));
+
+			}
+			if (requestBody2.containsKey("phoneNumber")) {
+				if (requestBody2.getJsonNumber("phoneNumber").isIntegral()) {
+					userDetail.setPhoneNumber(requestBody2.getJsonNumber("phoneNumber").toString());
+
+				}
+
+			}
+			if (requestBody2.containsKey("city")) {
+				userDetail.setCity(requestBody2.getString("city"));
+
+			}
+			user.setUserDetail(userDetail);
+		}
+		return user;
+
+	}
+
 	public User staffAdd(MultipartFile uploadfiles, JsonObject requestBody, User user) {
 		final StaffDetals userDetail = new StaffDetals();
 		if (requestBody.containsKey("userDetail")) {
@@ -307,22 +355,23 @@ public class Commonfunction {
 				userDetail.setPoliceVerification((requestBody2.getBoolean("policeVerification")));
 
 			}
-		 
-				try {
-					if (uploadfiles != null) {
-						userDetail.setPic(saveUploadedFiles(Arrays.asList(uploadfiles)).get(0));
 
-					}else {
-						userDetail.setPic(user.getStaffDetals().getPic());
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			try {
+				if (uploadfiles != null) {
+					userDetail.setPic(saveUploadedFiles(Arrays.asList(uploadfiles)).get(0));
+
+				} else {
+					userDetail.setPic(user.getStaffDetals().getPic());
 				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			user.setStaffDetals(userDetail);
 		}
 		return user;
 	}
+
 	public User familyAdd(MultipartFile uploadfiles, JsonObject requestBody, User user) {
 		final FamilyResident userDetail = new FamilyResident();
 		JsonReader jsonReader2 = Json
@@ -506,7 +555,7 @@ public class Commonfunction {
 		for (MultipartFile file : files) {
 
 			if (file.isEmpty()) {
-				continue;  
+				continue;
 			}
 			byte[] bytes = file.getBytes();
 			Path path = Paths.get(absolutePath + '/' + file.getOriginalFilename());

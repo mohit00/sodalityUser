@@ -67,21 +67,11 @@ public class UserServiceImpl implements UserService {
 
 		if (requestBody.containsKey("user_type")) {
 			user.setUser_type(requestBody.getJsonString("user_type").getString());
-			if (requestBody.getJsonString("user_type").getString().equals(UserType.userTypes.Admin.toString())) {
+			if (requestBody.getJsonString("user_type").getString().equals(UserType.userTypes.SuperAdmin.toString())) {
 				user = fun.AdminAdd(requestBody, user);
 			}
-			if (requestBody.getJsonString("user_type").getString().equals(UserType.userTypes.Society.toString())) {
-				User byId = userRepo.getById(Long.parseLong(requestBody.getJsonNumber("parent_id").toString()));
-				user.setParrentAccount(byId);
-			}
-			if (requestBody.getJsonString("user_type").getString().equals(UserType.userTypes.Staff.toString())) {
-				User byId = userRepo.getById(Long.parseLong(requestBody.getJsonNumber("parent_id").toString()));
-				user.setParrentAccount(byId);
-			}
-			if (requestBody.getJsonString("user_type").getString().equals(UserType.userTypes.Resident.toString())) {
-				User byId = userRepo.getById(Long.parseLong(requestBody.getJsonNumber("parent_id").toString()));
-				user.setParrentAccount(byId);
-			}
+			user.setUser_type(requestBody.getJsonString("user_type").getString());
+		
 		}
 		userRepo.save(user);
 		return user;
@@ -126,7 +116,10 @@ public class UserServiceImpl implements UserService {
 		UserResponse response = new UserResponse();
 		if (loginData != null) {
 			response.setStatus(true);
-			if (loginData.getUser_type().equals(UserType.userTypes.Admin.toString())) {
+			if (loginData.getUser_type().equals(UserType.userTypes.SuperAdmin.toString())) {
+				System.out.println(loginData.getId());
+				response.setData(userRepo.getAdminDetailWithId(loginData.getId()));
+			}else if (loginData.getUser_type().equals(UserType.userTypes.Admin.toString())) {
 				System.out.println(loginData.getId());
 				response.setData(userRepo.getAdminDetailWithId(loginData.getId()));
 			} else if (loginData.getUser_type().equals(UserType.userTypes.Society.toString())) {
@@ -610,6 +603,61 @@ public class UserServiceImpl implements UserService {
 			response.setMessage("Data get Successfully");
 		}
 		return response;
+	}
+
+	@Override
+	public User saveGroup(MultipartFile uploadfiles, JsonObject requestBody) {
+		// TODO Auto-generated method stub
+		User user = new User();
+		if (requestBody.containsKey("email")) {
+			user.setEmail(requestBody.getJsonString("email").getString());
+		}
+
+		if (requestBody.containsKey("password")) {
+			user.setPassword(requestBody.getJsonString("password").getString());
+		}
+		Date date = new Date();
+
+		user.setCreatedDate(date);
+		user.setLastModifiedDate(date);
+		user.setStatus(UserType.userStatus.Active.toString());
+
+		user.setUuid((fun.uuIDSend()));
+
+		user.setUser_type(UserType.userTypes.Admin.toString());
+		user = fun.GroupAdd(uploadfiles,  requestBody, user);
+		User byId = userRepo.getById(Long.parseLong(requestBody.getJsonNumber("parent_id").toString()));
+		user.setParrentAccount(byId);
+
+		userRepo.save(user);
+		return user;
+	}
+
+	@Override
+	public User updateGroup(MultipartFile uploadfiles, JsonObject requestBody) {
+		User user= new User();
+		if (requestBody.containsKey("id")) {
+			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
+			user = userRepo.findById(user.getId()).get();
+		}
+		Date date = new Date();
+		user.setLastModifiedDate(date);
+		user = fun.GroupAdd(uploadfiles,  requestBody, user);
+		userRepo.save(user);
+
+		return user;
+	}
+
+	@Override
+	public ArrayList<User> getGroup(JsonObject requestBody) {
+		// TODO Auto-generated method stub 
+		return userRepo.getAllGroup(requestBody.getString("parentId"));
+	}
+
+	@Override
+	public User getGroupByuuId(String uuid) {
+		// TODO Auto-generated method stub
+		return userRepo.getGroupDetail(uuid);
 	}
 
 }

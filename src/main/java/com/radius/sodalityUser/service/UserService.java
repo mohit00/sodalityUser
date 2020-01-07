@@ -60,6 +60,10 @@ public interface UserService {
 	public User getFamilyDetail(String uuid);
 	public ParentGetJson getParentDetail(String uuid);
 	
+public User saveGroup(MultipartFile uploadfiles, JsonObject requestBody);
+public User updateGroup(MultipartFile uploadfiles, JsonObject requestBody);
+public ArrayList<User> getGroup(JsonObject requestBody);
+public User getGroupByuuId(String uuid);
 
 
 }

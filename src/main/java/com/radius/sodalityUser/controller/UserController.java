@@ -1,5 +1,6 @@
 package com.radius.sodalityUser.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.json.JsonObject;
@@ -80,6 +81,35 @@ public class UserController {
 		SocietyListResponse society = service.getSociety(returnJsonObject);
 	    return new ResponseEntity<>(society, HttpStatus.CREATED);
 	}
+	
+	// Group Create 
+	@PostMapping(value ="/Save/Group")
+	public  ResponseEntity<User> saveGroup( @RequestParam(value ="files",  required=false) MultipartFile uploadfiles,   @RequestParam("data") String data) {
+	 
+		System.out.println(data);
+
+		JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(data.toString());
+  		
+		return new ResponseEntity<>(service.saveGroup(uploadfiles,returnJsonObject), HttpStatus.OK);
+	}
+	@PostMapping(value ="/get/Group")
+	public  ResponseEntity<ArrayList<User>> getGroup(@Valid @RequestBody String requestBodyString) {
+		JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(requestBodyString);
+
+		return new ResponseEntity<>(service.getGroup(returnJsonObject), HttpStatus.OK);
+	}
+	@GetMapping(value ="/get/Group/{uuid}")
+	public  ResponseEntity<User> getGroupByuuid(@PathVariable("uuid") String uuid) {
+		System.out.println(uuid);
+		return new ResponseEntity<>(service.getGroupByuuId(uuid), HttpStatus.OK);
+	}
+	@PutMapping(value ="/Group/Update")
+	public ResponseEntity<User> updateGroup( @RequestParam(value ="files",  required=false) MultipartFile uploadfiles,   @RequestParam("data") String data){
+		JsonObject returnJsonObject = Commonfunctionl.ReturnJsonObject(data);
+		User u = service.updateGroup(uploadfiles,returnJsonObject);
+		return new ResponseEntity<>(u, HttpStatus.OK);
+	}
+	
 	@PostMapping(value ="/Save/society")
 	public  ResponseEntity<User> saveSociety( @RequestParam(value ="files",  required=false) MultipartFile[] uploadfiles,HttpServletRequest request,@RequestParam(value="adImage",required=false) MultipartFile[]  adImage,@RequestParam(value="billLogo",required=false) MultipartFile billLogo,@RequestParam(value="societyLogo",required=false) MultipartFile societyLogo,@RequestParam("data") String data) {
 	 

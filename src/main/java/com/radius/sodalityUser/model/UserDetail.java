@@ -12,6 +12,21 @@ public class UserDetail {
 	private String address;
 	private String phoneNumber;
 	private String city;
+	private String profileImage;
+	private String name;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getProfileImage() {
+		return profileImage;
+	}
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
 	public Long getId() {
 		return id;
 	}
