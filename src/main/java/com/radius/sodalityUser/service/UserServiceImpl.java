@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 				user = fun.AdminAdd(requestBody, user);
 			}
 			user.setUser_type(requestBody.getJsonString("user_type").getString());
-		
+
 		}
 		userRepo.save(user);
 		return user;
@@ -119,13 +119,13 @@ public class UserServiceImpl implements UserService {
 			if (loginData.getUser_type().equals(UserType.userTypes.SuperAdmin.toString())) {
 				System.out.println(loginData.getId());
 				response.setData(userRepo.getAdminDetailWithId(loginData.getId()));
-			}else if (loginData.getUser_type().equals(UserType.userTypes.Admin.toString())) {
+			} else if (loginData.getUser_type().equals(UserType.userTypes.Admin.toString())) {
 				System.out.println(loginData.getId());
 				response.setData(userRepo.getAdminDetailWithId(loginData.getId()));
 			} else if (loginData.getUser_type().equals(UserType.userTypes.Society.toString())) {
 				response.setData(userRepo.getSocietyDetailWithId(loginData.getId()));
 			} else if (loginData.getUser_type().equals(UserType.userTypes.Resident.toString())) {
-				User u =new User();
+				User u = new User();
 				u = userRepo.getResidentDetailWithId(loginData.getId());
 				u.setParrentAccount(userRepo.getParentUuid(u.getUuid()));
 				response.setData(u);
@@ -255,29 +255,27 @@ public class UserServiceImpl implements UserService {
 			MultipartFile billLogo, MultipartFile societyLogo, JsonObject requestBody) {
 		// TODO Auto-generated method stub
 		User user = new User();
- 
+
 		if (requestBody.containsKey("id")) {
 			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
 			user = userRepo.findById(Long.parseLong(requestBody.getJsonNumber("id").toString())).get();
 		}
 		Date date = new Date();
 		user.setLastModifiedDate(date);
- 		if (requestBody.containsKey("user_type")) {
+		if (requestBody.containsKey("user_type")) {
 			user.setUser_type(requestBody.getJsonString("user_type").getString());
 			if (requestBody.getJsonString("user_type").getString().equals(UserType.userTypes.Society.toString())) {
-				user=  fun.SocietyAdd(uploadfiles, request, adImage, billLogo, societyLogo, requestBody, user); 
+				user = fun.SocietyAdd(uploadfiles, request, adImage, billLogo, societyLogo, requestBody, user);
 			}
 		}
- 		userRepo.save(user);
+		userRepo.save(user);
 		return user;
 	}
 
 	@Override
 	public User saveResident(MultipartFile uploadfiles, JsonObject requestBody) {
 		// TODO Auto-generated method stub
-
 		User user = new User();
-
 		if (requestBody.containsKey("email")) {
 			user.setEmail(requestBody.getJsonString("email").getString());
 		}
@@ -301,7 +299,7 @@ public class UserServiceImpl implements UserService {
 		User byId = userRepo.getById(Long.parseLong(requestBody.getJsonNumber("parent_id").toString()));
 		user.setParrentAccount(byId);
 		user = fun.residentAdd(uploadfiles, requestBody, user);
-		userRepo.save(user);
+ 		userRepo.save(user);
 		return user;
 	}
 
@@ -321,14 +319,13 @@ public class UserServiceImpl implements UserService {
 				set.add(unitRepo.getUnit(requestBody.getJsonArray("flatOwned").getString(i)));
 			}
 			user.setFlatOwned(set);
-		} 
+		}
 		user.setCreatedDate(userLastDetail.getCreatedDate());
-		Date date = new Date(); 
+		Date date = new Date();
 		user.setLastModifiedDate(date);
- 		user = fun.residentAdd(uploadfiles, requestBody, user);
+		user = fun.residentAdd(uploadfiles, requestBody, user);
 
-		userRepo.save(user);
-		return user;
+		return userRepo.save(user);
 	}
 
 	@Override
@@ -416,13 +413,13 @@ public class UserServiceImpl implements UserService {
 	public User updateStaff(MultipartFile uploadfiles, JsonObject requestBody) {
 		// TODO Auto-generated method stub
 		User user = new User();
- 		if (requestBody.containsKey("id")) {
+		if (requestBody.containsKey("id")) {
 			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
 			user = userRepo.findById(user.getId()).get();
-		} 
- 		Date date = new Date(); 
-		user.setLastModifiedDate(date); 
-  		user = fun.staffAdd(uploadfiles, requestBody, user);
+		}
+		Date date = new Date();
+		user.setLastModifiedDate(date);
+		user = fun.staffAdd(uploadfiles, requestBody, user);
 
 		userRepo.save(user);
 		return user;
@@ -468,11 +465,11 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 
 		User user = new User();
- 
+
 		if (requestBody.containsKey("id")) {
 			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
 
- 		}
+		}
 		if (requestBody.containsKey("email")) {
 			user.setEmail(requestBody.getJsonString("email").getString());
 		}
@@ -487,7 +484,7 @@ public class UserServiceImpl implements UserService {
 		if (requestBody.containsKey("uuid")) {
 			user.setUuid((requestBody.getString("uuid")));
 
-		}else {
+		} else {
 			user.setUuid((fun.uuIDSend()));
 
 		}
@@ -498,6 +495,7 @@ public class UserServiceImpl implements UserService {
 		userRepo.save(user);
 		return user;
 	}
+
 	@Override
 	public User updateFamilyMember(MultipartFile uploadfiles, JsonObject requestBody) {
 		// TODO Auto-generated method stub
@@ -518,7 +516,7 @@ public class UserServiceImpl implements UserService {
 		user.setStatus(UserType.userStatus.Active.toString());
 		user.setUuid(userlastDetail.get().getUuid());
 		user.setUser_type(UserType.userTypes.FamilyMember.toString());
- 		user.setParrentAccount(userRepo.getResidentDetail((requestBody.getString("parent_id"))));
+		user.setParrentAccount(userRepo.getResidentDetail((requestBody.getString("parent_id"))));
 		user = fun.familyAdd(uploadfiles, requestBody, user);
 		System.out.println(user.getFamilyDetail().getName());
 		userRepo.save(user);
@@ -531,7 +529,7 @@ public class UserServiceImpl implements UserService {
 		ArrayList<User> familyList = userRepo.getFamilyList(requestBody.getString("residentId"));
 		FamilyListResponse familyResponseList = new FamilyListResponse();
 		ArrayList<FamilyResponseJson> list2 = new ArrayList<FamilyResponseJson>();
-		for(int i=0;i<familyList.size();i++) {
+		for (int i = 0; i < familyList.size(); i++) {
 			FamilyResponseJson response = new FamilyResponseJson();
 			response.setName(familyList.get(i).getFamilyDetail().getName());
 			response.setEmail(familyList.get(i).getEmail());
@@ -549,19 +547,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getFamilyDetail(String uuid) {
 		// TODO Auto-generated method stub
-		
+
 		return userRepo.getFamilyByUuid(uuid);
-		}
+	}
 
 	@Override
 	public ParentGetJson getParentDetail(String uuid) {
 		// TODO Auto-generated method stub
 		User parentUuid = userRepo.getParentUuid(uuid);
-			ParentGetJson json = new ParentGetJson();
-			json.setUuid(parentUuid.getUuid());
-			
-		return json
-				;
+		ParentGetJson json = new ParentGetJson();
+		json.setUuid(parentUuid.getUuid());
+
+		return json;
 	}
 
 	@Override
@@ -570,10 +567,11 @@ public class UserServiceImpl implements UserService {
 		ArrayList<User> u = null;
 		ArrayList<staffResponse> responseJson = new ArrayList<staffResponse>();
 		if (requestBody.containsKey("uuid")) {
-			if(requestBody.containsKey("categoryUUid")) {
-				u = userRepo.getStaffListByCategory(requestBody.getJsonString("uuid").getString(),requestBody.getJsonString("categoryUUid").getString());
+			if (requestBody.containsKey("categoryUUid")) {
+				u = userRepo.getStaffListByCategory(requestBody.getJsonString("uuid").getString(),
+						requestBody.getJsonString("categoryUUid").getString());
 
-			}else {
+			} else {
 				u = userRepo.getStaffList(requestBody.getJsonString("uuid").getString());
 
 			}
@@ -625,7 +623,7 @@ public class UserServiceImpl implements UserService {
 		user.setUuid((fun.uuIDSend()));
 
 		user.setUser_type(UserType.userTypes.Admin.toString());
-		user = fun.GroupAdd(uploadfiles,  requestBody, user);
+		user = fun.GroupAdd(uploadfiles, requestBody, user);
 		User byId = userRepo.getById(Long.parseLong(requestBody.getJsonNumber("parent_id").toString()));
 		user.setParrentAccount(byId);
 
@@ -635,14 +633,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateGroup(MultipartFile uploadfiles, JsonObject requestBody) {
-		User user= new User();
+		User user = new User();
 		if (requestBody.containsKey("id")) {
 			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
 			user = userRepo.findById(user.getId()).get();
 		}
 		Date date = new Date();
 		user.setLastModifiedDate(date);
-		user = fun.GroupAdd(uploadfiles,  requestBody, user);
+		user = fun.GroupAdd(uploadfiles, requestBody, user);
 		userRepo.save(user);
 
 		return user;
@@ -650,7 +648,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ArrayList<User> getGroup(JsonObject requestBody) {
-		// TODO Auto-generated method stub 
+		// TODO Auto-generated method stub
 		return userRepo.getAllGroup(requestBody.getString("parentId"));
 	}
 

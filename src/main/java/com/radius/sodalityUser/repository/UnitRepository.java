@@ -10,7 +10,7 @@ import com.radius.sodalityUser.model.Unit;
 public interface UnitRepository  extends UserRepository<Unit, Long>  {
 	    @Query("Match (unit:Unit) -[rel:UNDER]-> (tower:Tower) where tower.uuid = {uuid}  RETURN unit")
 	    ArrayList<Unit> getAllUnit(@Param("uuid") String uuid);
-	    @Query(" Match (unit:Unit)  where unit.uuid = {uuid}  RETURN unit")
+	    @Query(" Match (unit:Unit) -[rel:UNIT_TYPE] ->(type:UnitType)  where unit.uuid = {uuid}  RETURN unit,rel,type")
 	    Unit getUnit(@Param("uuid") String uuid);
 	    @Query("Match (unit:Unit) <-[rel:FLAT_OWNED]- (u:User)  where u.uuid = {uuid}  RETURN unit")
 	    ArrayList<Unit> getResidentUnitList(@Param("uuid") String uuid);

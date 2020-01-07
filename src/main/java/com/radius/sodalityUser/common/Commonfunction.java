@@ -63,6 +63,8 @@ public class Commonfunction {
 				userDetail.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
 
 			}
+			userDetail.setName(requestBody2.getString("name"));
+
 			userDetail.setAddress(requestBody2.getJsonString("address").getString());
 			userDetail.setPhoneNumber(requestBody2.getString("phoneNumber"));
 			userDetail.setCity(requestBody2.getString("city"));
@@ -84,7 +86,7 @@ public class Commonfunction {
 			JsonObject requestBody2 = jsonReader2.readObject();
 
 			if (requestBody2.containsKey("id")) {
-				userDetail.setId(Long.parseLong(requestBody2.getJsonString("id").getString()));
+				userDetail.setId(user.societyDetail.getId());
 			}
 			String ImagesListfileName = Arrays.stream(uploadfiles).map(x -> {
 				return x.getOriginalFilename();
@@ -126,15 +128,23 @@ public class Commonfunction {
 					userDetail.setSocietyLogo(saveUploadedFiles(Arrays.asList(societyLogo)).get(0));
 
 				} else {
-					userDetail.setSocietyLogo(user.societyDetail.getSocietyLogo());
-//					userDetail.setSocietyLogo(path + requestBody2.getJsonString("societyLogoArray").getString());
+					if (user.getSocietyDetail() != null) {
 
+						userDetail.setSocietyLogo(user.societyDetail.getSocietyLogo());
+
+//					userDetail.setSocietyLogo(path + requestBody2.getJsonString("societyLogoArray").getString());
+					}
 				}
 				if (billLogo != null) {
 					userDetail.setBillLogo(saveUploadedFiles(Arrays.asList(billLogo)).get(0));
 
 				} else {
-					userDetail.setBillLogo(user.getSocietyDetail().getBillLogo());
+					if (user.getSocietyDetail() != null) {
+						userDetail.setBillLogo(user.getSocietyDetail().getBillLogo());
+
+					} else {
+
+					}
 
 				}
 
@@ -239,7 +249,10 @@ public class Commonfunction {
 					userDetail.setProfileImage((saveUploadedFiles(Arrays.asList(uploadfiles)).get(0)));
 
 				} else {
-					userDetail.setProfileImage(user.getUserDetail().getProfileImage());
+					if (user.getUserDetail() != null) {
+						userDetail.setProfileImage(user.getUserDetail().getProfileImage());
+
+					}
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -278,7 +291,7 @@ public class Commonfunction {
 					.createReader(new StringReader(requestBody.getJsonObject("userDetail").toString()));
 			JsonObject requestBody2 = jsonReader2.readObject();
 			if (requestBody2.containsKey("id")) {
-				userDetail.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
+				userDetail.setId(user.staffDetals.getId());
 			}
 			if (requestBody2.containsKey("categoryId")) {
 				userDetail.setCategory(catRepo.getCategoryDetail(requestBody2.getString("categoryId")));
@@ -302,40 +315,59 @@ public class Commonfunction {
 				userDetail.setVendor((requestBody2.getString("vendor")));
 			}
 			if (requestBody2.containsKey("from")) {
-				if (!requestBody2.getString("from").isEmpty()) {
-					String dateStr = requestBody2.getString("from");
-					userDetail.setFrom(DateFormate(dateStr));
-				}
+					if (!requestBody2.isNull("from")) {
+						if (!requestBody2.getString("from").isEmpty()) {
+							String dateStr = requestBody2.getString("from");
+							userDetail.setFrom(DateFormate(dateStr));
+						}
+					
+
+					} 
+				 
 
 			}
 			if (requestBody2.containsKey("to")) {
-				if (!requestBody2.getString("to").isEmpty()) {
-					String dateStr = requestBody2.getString("to");
-					userDetail.setTo(DateFormate(dateStr));
+					if (!requestBody2.isNull("to")) {
+						if (!requestBody2.getString("to").isEmpty()) {
+
+						String dateStr = requestBody2.getString("to");
+						userDetail.setTo(DateFormate(dateStr));
+
+					}
 
 				}
 			}
 			if (requestBody2.containsKey("dateOfCardIssue")) {
-				if (!requestBody2.getString("dateOfCardIssue").isEmpty()) {
-					String dateStr = requestBody2.getString("dateOfCardIssue");
-					userDetail.setDateOfCardIssue(DateFormate(dateStr));
+
+					if (!requestBody2.isNull("dateOfCardIssue")) {
+						if (!requestBody2.getString("dateOfCardIssue").isEmpty()) {
+
+						String dateStr = requestBody2.getString("dateOfCardIssue");
+						userDetail.setDateOfCardIssue(DateFormate(dateStr));
+
+					}
 
 				}
 			}
 			if (requestBody2.containsKey("validUpto")) {
-				if (!requestBody2.getString("validUpto").isEmpty()) {
+				if (!requestBody2.isNull("validUpto")) {
+					if (!requestBody2.getString("validUpto").isEmpty()) {
+
 					String dateStr = requestBody2.getString("validUpto");
 					userDetail.setValidUpto(DateFormate(dateStr));
 
 				}
+					}
 
 			}
 
 			if (requestBody2.containsKey("dateOfBirth")) {
-				if (!requestBody2.getString("dateOfBirth").isEmpty()) {
+				if (!requestBody2.isNull("dateOfBirth")) {
+					if (!requestBody2.getString("dateOfBirth").isEmpty()) {
+
 					String dateStr = requestBody2.getString("dateOfBirth");
 					userDetail.setDateOfBirth(DateFormate(dateStr));
-
+					}
 				}
 
 			}
@@ -352,8 +384,10 @@ public class Commonfunction {
 
 			}
 			if (requestBody2.containsKey("policeVerification")) {
-				userDetail.setPoliceVerification((requestBody2.getBoolean("policeVerification")));
+				if (!requestBody2.isNull("policeVerification")) {
+					userDetail.setPoliceVerification((requestBody2.getBoolean("policeVerification")));
 
+				}
 			}
 
 			try {
@@ -414,6 +448,7 @@ public class Commonfunction {
 		return user;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public User residentAdd(MultipartFile uploadfiles, JsonObject requestBody, User user) {
 		final ResidentDetail userDetail = new ResidentDetail();
 
@@ -423,7 +458,7 @@ public class Commonfunction {
 					.createReader(new StringReader(requestBody.getJsonObject("userDetail").toString()));
 			JsonObject requestBody2 = jsonReader2.readObject();
 			if (requestBody2.containsKey("id")) {
-				userDetail.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
+				userDetail.setId(user.getResidentDetail().getId());
 			}
 
 			if (requestBody2.containsKey("firstName")) {
@@ -447,20 +482,25 @@ public class Commonfunction {
 			}
 			if (requestBody2.containsKey("mobileNumber")) {
 
-				if (!requestBody2.getJsonNumber("mobileNumber").isIntegral()) {
+				if (requestBody2.isNull("mobileNumber")) {
+
+				} else {
+
 					userDetail.setMobileNumber(requestBody2.getJsonNumber("mobileNumber").toString());
 
 				}
 
 			}
-
+			System.out.println(userDetail.getMobileNumber());
 			if (requestBody2.containsKey("alternateEmailId")) {
 				userDetail.setAlternateEmailId(requestBody2.getString("alternateEmailId"));
 
 			}
 			if (requestBody2.containsKey("alternateMobileNumber")) {
 
-				if (!requestBody2.getJsonNumber("alternateMobileNumber").isIntegral()) {
+				if (requestBody2.isNull("alternateMobileNumber")) {
+
+				} else {
 					userDetail.setAlternateMobileNumber(requestBody2.getJsonNumber("alternateMobileNumber").toString());
 
 				}
@@ -468,7 +508,17 @@ public class Commonfunction {
 			}
 			if (requestBody2.containsKey("landLine")) {
 
-				if (!requestBody2.getJsonNumber("landLine").isIntegral()) {
+				if (requestBody2.containsValue("landLine")) {
+					userDetail.setLandLine(requestBody2.getJsonNumber("landLine").toString());
+
+				}
+
+			}
+			if (requestBody2.containsKey("landLine")) {
+
+				if (requestBody2.isNull("landLine")) {
+
+				} else {
 					userDetail.setLandLine(requestBody2.getJsonNumber("landLine").toString());
 
 				}
@@ -476,7 +526,9 @@ public class Commonfunction {
 			}
 			if (requestBody2.containsKey("intercom")) {
 
-				if (!requestBody2.getJsonNumber("intercom").isIntegral()) {
+				if (requestBody2.isNull("intercom")) {
+
+				} else {
 					userDetail.setIntercom(requestBody2.getJsonNumber("intercom").toString());
 
 				}

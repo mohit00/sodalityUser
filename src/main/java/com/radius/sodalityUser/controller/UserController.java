@@ -22,14 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.radius.sodalityUser.common.Commonfunction;
-import com.radius.sodalityUser.model.FamilyResident;
 import com.radius.sodalityUser.model.User;
-import com.radius.sodalityUser.response.UserResponse;
 import com.radius.sodalityUser.response.FamilyListResponse;
 import com.radius.sodalityUser.response.ParentGetJson;
 import com.radius.sodalityUser.response.ResidentListResponse;
 import com.radius.sodalityUser.response.SocietyListResponse;
 import com.radius.sodalityUser.response.StaffListResponse;
+import com.radius.sodalityUser.response.UserResponse;
 import com.radius.sodalityUser.service.TowerService;
 import com.radius.sodalityUser.service.UserService;
  
