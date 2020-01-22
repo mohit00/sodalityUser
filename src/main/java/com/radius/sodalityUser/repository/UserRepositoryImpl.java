@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.radius.sodalityUser.model.User;
 
 @Repository
+@Transactional
 public interface UserRepositoryImpl extends UserRepository<User, Long> {
 
 	@Query("MATCH (u:User) -[rel:USER_DETAIL]->(de:user_detail)   RETURN u  ,rel,de")

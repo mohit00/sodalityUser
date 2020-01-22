@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.radius.sodalityUser.common.Commonfunction;
 import com.radius.sodalityUser.model.Category;
-import com.radius.sodalityUser.model.Tower;
 import com.radius.sodalityUser.service.CategoryService;
 
 @RestController

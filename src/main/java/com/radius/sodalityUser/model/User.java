@@ -56,7 +56,7 @@ public class User {
 	@Relationship(type = "USER_DETAIL", direction = Relationship.OUTGOING)
 	public StaffDetals staffDetals;
 	@JsonProperty(access = Access.WRITE_ONLY)
-	@Relationship(type = "UNDER", direction = Relationship.UNDIRECTED)
+	@Relationship(type = "UNDER", direction = Relationship.OUTGOING)
 	public User parrentAccount;
 
 	@Relationship(type = "FLAT_OWNED", direction = Relationship.UNDIRECTED)

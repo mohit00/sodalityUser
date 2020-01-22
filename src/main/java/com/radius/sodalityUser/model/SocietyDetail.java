@@ -24,7 +24,62 @@ public class SocietyDetail {
 	private String contactNumber;
 	private String contactEmail;
 	private String aboutSociety;
+	private Boolean amrAccess;
+	private Boolean ibmsAccess;
+	private String amrUserName;
+	private String amrpassword;
 	
+	private String ibmsUserName;
+	private String ibmspassword;
+	
+	public Boolean getAmrAccess() {
+		return amrAccess;
+	}
+
+	public void setAmrAccess(Boolean amrAccess) {
+		this.amrAccess = amrAccess;
+	}
+
+	public Boolean getIbmsAccess() {
+		return ibmsAccess;
+	}
+
+	public void setIbmsAccess(Boolean ibmsAccess) {
+		this.ibmsAccess = ibmsAccess;
+	}
+
+	public String getAmrUserName() {
+		return amrUserName;
+	}
+
+	public void setAmrUserName(String amrUserName) {
+		this.amrUserName = amrUserName;
+	}
+
+	public String getAmrpassword() {
+		return amrpassword;
+	}
+
+	public void setAmrpassword(String amrpassword) {
+		this.amrpassword = amrpassword;
+	}
+
+	public String getIbmsUserName() {
+		return ibmsUserName;
+	}
+
+	public void setIbmsUserName(String ibmsUserName) {
+		this.ibmsUserName = ibmsUserName;
+	}
+
+	public String getIbmspassword() {
+		return ibmspassword;
+	}
+
+	public void setIbmspassword(String ibmspassword) {
+		this.ibmspassword = ibmspassword;
+	}
+
 	@Relationship(type = "IMAGE_LIST", direction = Relationship.OUTGOING)
 	public ImageList imageList;
 

@@ -10,4 +10,7 @@ public class UserType {
 	 public enum complainStatus{
 		 New,Assigned,Inprogress,Pending,Resolved,Reopen,Close
 	 }
+	 public enum noticeType{
+		 notice,discussion,notification
+	 }
 }

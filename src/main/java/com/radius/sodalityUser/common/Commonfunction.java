@@ -147,7 +147,38 @@ public class Commonfunction {
 					}
 
 				}
+			 
+				if (requestBody2.containsKey("amrAccess")) {
+					userDetail.setAmrAccess(requestBody2.getBoolean("amrAccess"));
+					if(userDetail.getAmrAccess()){
+						if (requestBody2.containsKey("amrUserName")) {
+							userDetail.setAmrUserName(requestBody2.getString("amrUserName"));
+						}
+						if (requestBody2.containsKey("amrpassword")) {
+							userDetail.setAmrpassword(requestBody2.getString("amrpassword"));
 
+						}
+					}
+					
+				}
+				
+	if (requestBody2.containsKey("ibmsAccess")) {
+		userDetail.setIbmsAccess(requestBody2.getBoolean("ibmsAccess"));
+		if(userDetail.getIbmsAccess()){
+			if (requestBody2.containsKey("ibmsUserName")) {
+				userDetail.setIbmsUserName(requestBody2.getString("ibmsUserName"));
+
+			}
+			if (requestBody2.containsKey("ibmspassword")) {
+				userDetail.setIbmspassword(requestBody2.getString("ibmspassword"));
+
+			}
+		}
+	
+				}
+	
+	
+	 
 				if (requestBody2.containsKey("imageListArray")) {
 					for (int i = 0; i < requestBody2.getJsonArray("imageListArray").size(); i++) {
 						listimage.add(path + requestBody2.getJsonArray("imageListArray").getString(i));
@@ -363,13 +394,11 @@ public class Commonfunction {
 
 			if (requestBody2.containsKey("dateOfBirth")) {
 				if (!requestBody2.isNull("dateOfBirth")) {
-					if (!requestBody2.getString("dateOfBirth").isEmpty()) {
-
+					if (!requestBody2.getString("dateOfBirth").isEmpty()) { 
 					String dateStr = requestBody2.getString("dateOfBirth");
 					userDetail.setDateOfBirth(DateFormate(dateStr));
 					}
-				}
-
+				} 
 			}
 			if (requestBody2.containsKey("aadharNo")) {
 				userDetail.setAadharNo((requestBody2.getString("aadharNo")));

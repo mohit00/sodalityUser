@@ -33,7 +33,7 @@ import com.radius.sodalityUser.response.SocietyListResponse;
 import com.radius.sodalityUser.response.StaffListResponse;
 import com.radius.sodalityUser.response.UserResponse;
 import com.radius.sodalityUser.response.staffResponse;
-
+@Transactional 
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
@@ -249,17 +249,19 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userRepo.getByuuid(uuid);
 	}
-
+	
+	@Transactional 
 	@Override
 	public User updateSociety(MultipartFile[] uploadfiles, HttpServletRequest request, MultipartFile[] adImage,
 			MultipartFile billLogo, MultipartFile societyLogo, JsonObject requestBody) {
 		// TODO Auto-generated method stub
-		User user = new User();
+		User user = null;
 
 		if (requestBody.containsKey("id")) {
-			user.setId(Long.parseLong(requestBody.getJsonNumber("id").toString()));
-			user = userRepo.findById(Long.parseLong(requestBody.getJsonNumber("id").toString())).get();
+			System.out.println(requestBody.getJsonNumber("id").toString());
+ 			user = userRepo.findById(Long.parseLong(requestBody.getJsonNumber("id").toString())).get();
 		}
+		
 		Date date = new Date();
 		user.setLastModifiedDate(date);
 		if (requestBody.containsKey("user_type")) {
@@ -268,8 +270,9 @@ public class UserServiceImpl implements UserService {
 				user = fun.SocietyAdd(uploadfiles, request, adImage, billLogo, societyLogo, requestBody, user);
 			}
 		}
-		userRepo.save(user);
-		return user;
+		
+		
+		return userRepo.save(user);
 	}
 
 	@Override
